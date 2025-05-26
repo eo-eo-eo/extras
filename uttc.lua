@@ -64,11 +64,11 @@ if game.GameId == 6523512604 then
         end
     end)
 
-    createButton("Add Inf", 130, function()
+    createButton("Add Inf(irreversible)", 130, function()
         ReplicatedStorage:WaitForChild("RemoveCorrupted"):InvokeServer(-math.huge)
     end)
 
-    createButton("Add NaN", 170, function()
+    createButton("Add NaN (irreversible counts as 0)", 170, function()
         ReplicatedStorage:WaitForChild("RemoveCorrupted"):InvokeServer(0/0)
     end)
 
