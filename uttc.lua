@@ -165,4 +165,3 @@ if game.GameId ~= 6523512604 then return end
             frame.Position = UDim2.new(offset.X.Scale, offset.X.Offset + d.X, offset.Y.Scale, offset.Y.Offset + d.Y)
         end
     end)
-end
