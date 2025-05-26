@@ -93,7 +93,18 @@ local foundObject = nil
 
 remoteBox.FocusLost:Connect(function()
 	local name = remoteBox.Text
-	foundObject = game.ReplicatedStorage:FindFirstChild(name) or workspace:FindFirstChild(name)
+	foundObject = nil
+	local function findInGame(obj)
+		if obj.Name == name and (obj:IsA("RemoteEvent") or obj:IsA("RemoteFunction") or obj:IsA("BindableEvent") or obj:IsA("BindableFunction")) then
+			foundObject = obj
+			return true
+		end
+		for _, child in ipairs(obj:GetChildren()) do
+			if findInGame(child) then return true end
+		end
+		return false
+	end
+	findInGame(game)
 	if not foundObject then
 		StarterGui:SetCore("SendNotification", {
 			Title = "Warning",
