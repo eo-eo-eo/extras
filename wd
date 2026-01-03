@@ -1,0 +1,295 @@
+-- ts file was generated at discord.gg/25ms
+
+
+towerby = {}
+towerbybackup = {}
+ranks = {
+    "NoRank",
+    "BattleReady1",
+    "BattleReady2",
+    "BattleReady3",
+    "FarReach1",
+    "FarReach2",
+    "FarReach3",
+    "SwiftStrike1",
+    "SwiftStrike2",
+    "SwiftStrike3",
+    "EagleEye",
+    "LightningSpeed",
+    "Finisher",
+    "Warlord",
+    "BattleMaster",
+    "ForceOfNature",
+    "GoldenMight",
+    "EternalGlory"
+}
+toweryou = {}
+youtower = game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerEquippingService.RF.getEquippedTowers:InvokeServer()
+local v1, v2, v3 = pairs(youtower)
+while true do
+    local v4
+    v3, v4 = v1(v2, v3)
+    if v3 == nil then
+        break
+    end
+    table.insert(toweryou, v4)
+end
+local v5, v6, v7 = pairs(game.ReplicatedStorage.Databases.Items.Tower.Towers:GetDescendants())
+while true do
+    local v8, v9 = v5(v6, v7)
+    if v8 == nil then
+        break
+    end
+    v7 = v8
+    if tostring(v9.parent) == "Towers" then
+        table.insert(towerby, v9.Name)
+        table.insert(towerbybackup, v9.Name)
+    end
+end
+table.sort(towerby)
+table.sort(towerbybackup)
+_G.slotmax = game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerEquippingService.RF.getUnlockedEquipSlots:InvokeServer()
+local v10 = game:GetService("UserInputService").TouchEnabled
+local v11 = game:GetService("UserInputService").KeyboardEnabled
+local vu12 = game.Players.LocalPlayer
+local vu13 = vu12:GetMouse()
+local v14 = game:GetService("UserInputService")
+local vu15 = false
+if _G.Onspawn == nil then
+    vu13.Button1Down:connect(function()
+        if _G.mobilespawn == true then
+            pos = vu13.Hit.p
+            args = {
+                _G.vybor,
+                Vector3.new(pos.X, pos.Y, pos.Z)
+            }
+            game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerSpawnService.RF.deploy:InvokeServer(unpack(args))
+        end
+        if vu15 then
+            pos = vu13.Hit.p
+            args = {
+                _G.vybor,
+                Vector3.new(pos.X, pos.Y, pos.Z)
+            }
+            game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerSpawnService.RF.deploy:InvokeServer(unpack(args))
+        end
+    end)
+    _G.Onspawn = 1
+end
+v14.InputBegan:connect(function(p16, _)
+    if p16.UserInputType == Enum.UserInputType.Keyboard then
+        if p16.KeyCode ~= Enum.KeyCode.LeftControl then
+            if p16.KeyCode == Enum.KeyCode.RightControl then
+                vu15 = true
+            end
+        else
+            vu15 = true
+        end
+    end
+end)
+v14.InputEnded:connect(function(p17, _)
+    if p17.UserInputType == Enum.UserInputType.Keyboard then
+        if p17.KeyCode ~= Enum.KeyCode.LeftControl then
+            if p17.KeyCode == Enum.KeyCode.RightControl then
+                vu15 = false
+            end
+        else
+            vu15 = false
+        end
+    end
+end)
+local v18 = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local v19 = v18:MakeWindow({
+    Name = "World Defenders",
+    HidePremium = false,
+    SaveConfig = false,
+    ConfigFolder = "World_Defenders"
+})
+if v11 == true then
+    v18:MakeNotification({
+        Name = "World Defenders GUI",
+        Content = "Hello, have a good use on pc!",
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
+if v10 == true then
+    v18:MakeNotification({
+        Name = "World Defenders GUI",
+        Content = "Hello, have a good use on mobile!",
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
+local v20 = v19:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+v20:AddSection({
+    Name = "Infinite Spawn"
+})
+if v11 == true then
+    v20:AddLabel("Holding CTRL+LeftClick to spawn")
+end
+local vu22 = v20:AddDropdown({
+    Name = "Choose Tower: ",
+    Default = "1",
+    Options = toweryou,
+    Callback = function(p21)
+        _G.vybor = p21
+        _G.choosetower = p21
+    end
+})
+if v10 == true then
+    v20:AddToggle({
+        Name = "On/Off to spawn towers",
+        Default = false,
+        Callback = function(p23)
+            _G.mobilespawn = p23
+        end
+    })
+end
+local v24 = v19:MakeTab({
+    Name = "Equips",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+v24:AddSection({
+    Name = "Equips"
+})
+local vu26 = v24:AddDropdown({
+    Name = "Choose Tower: ",
+    Default = "",
+    Options = towerby,
+    Callback = function(p25)
+        _G.equip = p25
+    end
+})
+v24:AddTextbox({
+    Name = "Tower sorting (first letter): ",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(p27)
+        towerby = {}
+        local v28, v29, v30 = pairs(game.ReplicatedStorage.Databases.Items.Tower.Towers:GetDescendants())
+        while true do
+            local v31
+            v30, v31 = v28(v29, v30)
+            if v30 == nil then
+                break
+            end
+            if tostring(v31.parent) == "Towers" then
+                table.insert(towerby, v31.Name)
+            end
+        end
+        table.sort(towerby)
+        oneworld = {}
+        if p27 ~= "" then
+            local v32, v33, v34 = pairs(towerbybackup)
+            while true do
+                local v35
+                v34, v35 = v32(v33, v34)
+                if v34 == nil then
+                    break
+                end
+                if string.sub(v35, 1, 1) == string.upper(tostring(p27)) then
+                    table.insert(oneworld, v35)
+                end
+            end
+            towerby = oneworld
+        end
+        vu26:Refresh(towerby, true)
+    end
+})
+v24:AddDropdown({
+    Name = "Choose Ranks: ",
+    Default = "1",
+    Options = ranks,
+    Callback = function(p36)
+        local v37 = p36 == "NoRank" and "" or p36
+        _G.equiprank = v37
+    end
+})
+v24:AddSlider({
+    Name = "Choose slot: ",
+    Min = 1,
+    Max = _G.slotmax,
+    Default = 1,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 1,
+    ValueName = "Slot",
+    Callback = function(p38)
+        _G.equipslot = p38
+    end
+})
+v24:AddButton({
+    Name = "Equip",
+    Callback = function()
+        local v39 = {
+            _G.equipslot,
+            _G.equip .. _G.equiprank
+        }
+        game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerEquippingService.RF.equipToSlot:InvokeServer(unpack(v39))
+        toweryou = {}
+        youtower = game:GetService("ReplicatedStorage").SharedModules.Knit.Services.TowerEquippingService.RF.getEquippedTowers:InvokeServer()
+        local v40, v41, v42 = pairs(youtower)
+        while true do
+            local v43
+            v42, v43 = v40(v41, v42)
+            if v42 == nil then
+                break
+            end
+            table.insert(toweryou, v43)
+        end
+        vu22:Refresh(toweryou, true)
+    end
+})
+local v44 = v19:MakeTab({
+    Name = "Dupe",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+v44:AddSection({
+    Name = "No Auto"
+})
+v44:AddButton({
+    Name = "Dupe 1 (Soon...) (DONT CLICK ON IT)",
+    Callback = function()
+        for _ = 1, 100 do
+            game:GetService("ReplicatedStorage").SharedModules.Knit.Services.ItemPurchaseService.RF.purchase:InvokeServer(unpack({
+                "TinyTurtlePet",
+                2
+            }))
+            game:GetService("ReplicatedStorage").SharedModules.Knit.Services.ItemPurchaseService.RF.purchase:InvokeServer(unpack({
+                "InfernoPet",
+                2
+            }))
+        end
+        vu12:Kick("I told you not to click on it!")
+    end
+})
+local v45 = v19:MakeTab({
+    Name = "Others",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+v45:AddSection({
+    Name = "Funny functions"
+})
+pauses = false
+v45:AddButton({
+    Name = "Pause LOBBY",
+    Callback = function()
+        if pauses ~= false then
+            if pauses == true then
+                game:GetService("ReplicatedStorage").SharedModules.Knit.Services.GamePauseService.RF.unpause:InvokeServer()
+                pauses = false
+            end
+        else
+            game:GetService("ReplicatedStorage").SharedModules.Knit.Services.GamePauseService.RF.pause:InvokeServer()
+            pauses = true
+        end
+    end
+})
+v18:Init()
